@@ -6,25 +6,26 @@
 GET {{baseUrl}}/advertisements/
 Content-Type: application/json
 
+
 ###
 
 # создание объявления
 POST {{baseUrl}}/advertisements/
 Content-Type: application/json
-Authorization: Token 2fed88c08d5097b1521fcd8c257113a3d83eb4ec
+Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
 
 {
-  "title": "Кровать МирСтулМорсуы",
-  "description": "цуацуа",
-  "status": "CLOSED"
+  "title": "7",
+  "description": "7",
+  "status": "OPEN"
 }
 
 ###
 
 # попытка поменять объявление
-PATCH {{baseUrl}}/advertisements/53/
+PATCH {{baseUrl}}/advertisements/16/
 Content-Type: application/json
-Authorization: Token 2fed88c08d5097b1521fcd8c257113a3d83eb4ec
+Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
 
 {
   "status": "CLOSED"
@@ -33,11 +34,33 @@ Authorization: Token 2fed88c08d5097b1521fcd8c257113a3d83eb4ec
 ###
 
 # фильтрация по создателю
-GET {{baseUrl}}/advertisements/?creator=3
+GET {{baseUrl}}/advertisements/?creator=3&status=OPEN
 Content-Type: application/json
 
 ###
 
 # фильтрация по дате
-GET {{baseUrl}}/advertisements/?created_at_before=2020-10-01
+GET {{baseUrl}}/advertisements/?created_at_after=2020-10-01
 Content-Type: application/json
+
+
+###
+
+# посмотреть объявление в избранном
+GET {{baseUrl}}/advertisements/favorite_list/
+Content-Type: application/json
+Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
+
+###
+
+# удалить объявление из избранного
+DELETE {{baseUrl}}/advertisements/1/favorite_delete/
+Content-Type: application/json
+Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
+
+###
+
+# добавление объявления в избранное
+POST {{baseUrl}}/advertisements/16/favorite_add/
+Content-Type: application/json
+Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
