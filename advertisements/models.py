@@ -35,7 +35,7 @@ class Favorite(models.Model):
     advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE
     )
     class Meta:
         verbose_name = 'Избранные'

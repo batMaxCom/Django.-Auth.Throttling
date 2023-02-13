@@ -31,17 +31,15 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         req = self.context
         user = req['request'].user
         request = req['view'].action
-        if request in ['create', 'update', 'partial_update'] and data['status'] == 'OPEN':
+        if request == 'create' or data.get('status') == 'OPEN':
             if Advertisement.objects.filter(creator=user, status='OPEN').count() > 9:
                 raise serializers.ValidationError('У пользователя не может быть больше 10 активных объявлений!')
         return data
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
-    user = UserSerializer(
-        read_only=True,
-    )
+    advertisement = AdvertisementSerializer()
 
     class Meta:
         model = Favorite
-        fields = ('id', 'advertisement', 'user')
+        fields = ['advertisement']

@@ -12,7 +12,7 @@ Content-Type: application/json
 # создание объявления
 POST {{baseUrl}}/advertisements/
 Content-Type: application/json
-Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
+Authorization: Token 389eddc575d6e445b7d620ff6bb1502f7cf56da2
 
 {
   "title": "7",
@@ -23,13 +23,22 @@ Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
 ###
 
 # попытка поменять объявление
-PATCH {{baseUrl}}/advertisements/16/
+PATCH {{baseUrl}}/advertisements/8/
 Content-Type: application/json
-Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
+Authorization: Token 389eddc575d6e445b7d620ff6bb1502f7cf56da2
 
 {
-  "status": "CLOSED"
+  "status": "CLOSED",
+  "description":"Новое"
 }
+
+
+###
+
+# попытка удалить объявление
+DELETE  {{baseUrl}}/advertisements/10/
+Content-Type: application/json
+Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
 
 ###
 
@@ -61,6 +70,7 @@ Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
 ###
 
 # добавление объявления в избранное
-POST {{baseUrl}}/advertisements/16/favorite_add/
+POST {{baseUrl}}/advertisements/11/favorite_add/
 Content-Type: application/json
-Authorization: Token fc00afba9fa57a400900419b444647f4b78843b9
+Authorization: Token bfb7ccf1c427631568ae345d51ec45314aad1851
+

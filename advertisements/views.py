@@ -9,7 +9,7 @@ from rest_framework.authentication import TokenAuthentication
 
 from advertisements.filters import AdvertisementFilter
 from advertisements.models import Advertisement, Favorite
-from advertisements.permissions import IsOwner
+from advertisements.permissions import IsNotOwnerAndAuthenticated, IsOwnerAndAuthenticatedOrAdmin
 from advertisements.serializers import AdvertisementSerializer, FavoriteSerializer
 
 
@@ -22,14 +22,12 @@ class AdvertisementViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = AdvertisementFilter
 
+
     def get_permissions(self):
         if self.action in ["create", "update", "partial_update", "destroy"]:
-            if self.request.user.is_superuser:
-                return [IsAdminUser()]
-            else:
-                return [IsAuthenticated(), IsOwner()]
+            return [IsOwnerAndAuthenticatedOrAdmin()]
         else:
-            return [IsAuthenticatedOrReadOnly()]
+            return [IsNotOwnerAndAuthenticated()]
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset()).filter(status="OPEN", draft=False)
@@ -56,12 +54,9 @@ class AdvertisementViewSet(ModelViewSet):
     def favorite_add(self, request, pk=None):
         adv = self.get_object()
         user = self.request.user
-        if adv.creator != user:
-            favorite = Favorite.objects.filter(user=user, advertisement=adv).first()
-            if favorite is None:
-                Favorite.objects.create(user=user, advertisement=adv)
-                return Response({'message': 'Запись добавлена в избранное!'})
-            else:
-                return Response({'ErrorMessage': 'Запись уже в избранном!'})
+        favorite = Favorite.objects.filter(user=user, advertisement=adv).first()
+        if favorite is None:
+            Favorite.objects.create(user=user, advertisement=adv)
+            return Response({'message': 'Запись добавлена в избранное!'})
         else:
-            return Response({'ErrorMessage': 'Вы не можете добавить свое объявление в избранное!'})
+            return Response({'ErrorMessage': 'Запись уже в избранном!'})
